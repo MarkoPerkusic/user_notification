@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const axios = require('axios');
 
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('users.db', (err) => {
@@ -22,6 +23,7 @@ const db = new sqlite3.Database('users.db', (err) => {
 
 router.post('/', (req, res) => {
 	const { email, password, action } = req.body;
+	console.log(`USERS`);
 
 	if (action === 'login') {
 		// Check if user exists
@@ -67,7 +69,16 @@ router.post('/', (req, res) => {
 				console.error('Error while creating the new user:', err.message);
 				return res.status(500).json({ message: 'Internal Server Error' });
 			}
-		res.json({ message: 'User registered successfully' });
+			
+			axios.post('http://localhost:3000/send-welcome-email', { email })
+			.then(response => {
+				console.log(response.data.message); // Log the response from the send-welcome-email endpoint
+			})
+			.catch(error => {
+				console.error('Error sending welcome email:', error.message);
+			});
+		
+			res.json({ message: 'User registered successfully' });
 		});
 	} else {
 		res.status(400).send('Bad Request');
