@@ -26,13 +26,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
 
 app.get('/', (req, res) => {
-  console.log(`1 action:${req.body.action}`);
   res.sendFile(path.join(__dirname, 'views', 'login.html'));
 });
 
 // Mock part
 app.post('/send-welcome-email', (req, res) => {
-  //res.json({ message: 'Welcome email sent!' });
   console.log('Welcome email sent!');
 });
 

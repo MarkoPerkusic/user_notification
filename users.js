@@ -23,7 +23,6 @@ const db = new sqlite3.Database('users.db', (err) => {
 
 router.post('/', (req, res) => {
 	const { email, password, action } = req.body;
-	console.log(`USERS`);
 
 	if (action === 'login') {
 		// Check if user exists
@@ -72,7 +71,7 @@ router.post('/', (req, res) => {
 			
 			axios.post('http://localhost:3000/send-welcome-email', { email })
 			.then(response => {
-				console.log(response.data.message); // Log the response from the send-welcome-email endpoint
+				console.log(response.data.message);
 			})
 			.catch(error => {
 				console.error('Error sending welcome email:', error.message);
